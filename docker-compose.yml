@@ -1,8 +1,5 @@
 version: "2"
 
-volumes:
-  spotifycache:
-
 services:
   # Core services
   # -- Required for a fully featured installation of balenaSound
@@ -24,18 +21,6 @@ services:
       io.balena.features.balena-api: "1"
       io.balena.features.supervisor-api: 1
 
-  multiroom-server:
-    build: ./core/multiroom/server
-    restart: on-failure
-    ports:
-      - 1704:1704
-      - 1705:1705
-      - 1780:1780
-
-  multiroom-client:
-    build: ./core/multiroom/client
-    restart: on-failure
-
   # Plugins
   # -- Additional plugins can be added. See https://balena-labs-projects.github.io/balena-sound/plugins.
   # -- Remove unwanted plugins as needed
@@ -48,21 +33,6 @@ services:
     labels:
       io.balena.features.dbus: 1
 
-  airplay:
-    build: ./plugins/airplay
-    restart: on-failure
-    network_mode: host
-    privileged: true
-    labels:
-      io.balena.features.dbus: 1
-
-  spotify:
-    build: ./plugins/spotify
-    restart: on-failure
-    privileged: true
-    network_mode: host
-    volumes:
-      - spotifycache:/var/cache/raspotify
 
   # https://github.com/balenablocks/hostname
   hostname:
